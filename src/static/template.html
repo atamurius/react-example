@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>React example</title>
+
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" 
+        integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <style>
+      .table .footer td {
+        border-top: 2px solid #ddd;
+        background: white;
+      }
+      .table .footer:hover td {
+        background: white;
+      }
+      .table tbody {
+        border-bottom: 2px solid #ddd;
+      }
+      .order-table tbody tr button {
+        visibility: hidden;
+      }
+      .order-table tbody tr:hover button {
+        visibility: visible;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/">Заказ<sup>и</sup>Ко</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <form class="navbar-form navbar-left">
+            <div class="form-group">
+              <input type="text" class="form-control" placeholder="Пин-код">
+            </div>
+            <button type="submit" class="btn btn-default">Создать заказ</button>
+          </form>
+          <ul class="nav navbar-nav navbar-right">
+            <li><p class="navbar-text">Аноним</p></li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>  
+  
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-4 col-lg-offset-4">
+          <div class="panel panel-default">
+            <div class="panel-heading">Доступ к заказу</div>
+            <div class="panel-body">
+              <form class="form-horizontal">
+                <div class="form-group">
+                  <label for="inputEmail3" class="col-sm-4 control-label">Пин-код:</label>
+                  <div class="col-sm-8">
+                    <input type="password" class="form-control" id="inputEmail3" placeholder="Пин-код">
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="inputPassword3" class="col-sm-4 control-label">Представьтесь:</label>
+                  <div class="col-sm-8">
+                    <input type="text" class="form-control" id="inputPassword3" placeholder="Ваше имя">
+                  </div>
+                </div>
+              </form>
+            </div>
+             <div class="panel-footer text-right">
+              <button class="btn btn-primary">Открыть заказ</button>
+             </div>
+          </div>
+        </div>
+      </div>
+      <h1>Ваш заказ</h1>
+      <table class="table order-table table-hover table-striped">
+        <thead>
+          <tr>
+            <th>Блюда одной категории</th>
+            <th class="text-right">Цена</th>
+            <th class="text-center warning">Кол.</th>
+            <th class="text-right warning">Стоим.</th>
+            <th class="text-right">Пользователь 1</th>
+            <th class="text-right">Пользователь 2</th>
+            <th class="text-right">Пользователь 3</th>
+            <th class="text-right">Пользователь 4</th>
+            <th class="text-center info">Кол. всего</th>
+            <th class="text-right info">Стоим. всего</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Какое-то блюдо</td>
+            <td class="text-right">10</td>
+            <td class="text-center warning">
+              <button class="btn btn-xs btn-default btn-success">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+              </button>
+              <span class="badge">5</span>
+              <button class="btn btn-xs btn-danger">
+                <span class="glyphicon glyphicon-minus-sign"></span>
+              </button>
+            </td>
+            <td class="text-right warning">50</td>
+            <td class="text-right"></td>
+            <td class="text-right">20 <span class="badge">2</span></td>
+            <td class="text-right">10 <span class="badge">1</span></td>
+            <td class="text-right">30 <span class="badge">3</span></td>
+            <td class="text-center info">11</td>
+            <td class="text-right info">110</td>
+          </tr>
+          <tr>
+            <td>Какое-то блюдо</td>
+            <td class="text-right">10</td>
+            <td class="text-center warning">
+              <button class="btn btn-xs btn-default btn-success">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+              </button>
+              <span class="badge">5</span>
+              <button class="btn btn-xs btn-danger">
+                <span class="glyphicon glyphicon-minus-sign"></span>
+              </button>
+            </td>
+            <td class="text-right warning">50</td>
+            <td class="text-right"></td>
+            <td class="text-right">20 <span class="badge">2</span></td>
+            <td class="text-right">10 <span class="badge">1</span></td>
+            <td class="text-right">30 <span class="badge">3</span></td>
+            <td class="text-center info">11</td>
+            <td class="text-right info">110</td>
+          </tr>
+          <tr>
+            <td>Какое-то блюдо</td>
+            <td class="text-right">10</td>
+            <td class="text-center warning">
+              <button class="btn btn-xs btn-default btn-success">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+              </button>
+              <span class="badge">5</span>
+              <button class="btn btn-xs btn-danger">
+                <span class="glyphicon glyphicon-minus-sign"></span>
+              </button>
+            </td>
+            <td class="text-right warning">50</td>
+            <td class="text-right"></td>
+            <td class="text-right">20 <span class="badge">2</span></td>
+            <td class="text-right">10 <span class="badge">1</span></td>
+            <td class="text-right">30 <span class="badge">3</span></td>
+            <td class="text-center info">11</td>
+            <td class="text-right info">110</td>
+          </tr>
+          <tr>
+            <td>Какое-то блюдо</td>
+            <td class="text-right">10</td>
+            <td class="text-center warning">
+              <button class="btn btn-xs btn-default btn-success">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+              </button>
+              <span class="badge">5</span>
+              <button class="btn btn-xs btn-danger">
+                <span class="glyphicon glyphicon-minus-sign"></span>
+              </button>
+            </td>
+            <td class="text-right warning">50</td>
+            <td class="text-right"></td>
+            <td class="text-right">20 <span class="badge">2</span></td>
+            <td class="text-right">10 <span class="badge">1</span></td>
+            <td class="text-right">30 <span class="badge">3</span></td>
+            <td class="text-center info">11</td>
+            <td class="text-right info">110</td>
+          </tr>
+
+          <tr class="footer">
+            <td colspan="2"></td>
+            <td colspan="2" class="text-right warning">
+              200
+            </td>
+            <td class="text-right"></td>
+            <td class="text-right">80</td>
+            <td class="text-right">80</td>
+            <td class="text-right">80</td>
+            <td colspan="2" class="text-right info">440</td>
+          </tr>
+        </tbody>
+        <thead>
+          <tr> 
+            <th>Блюда другой категории</th>
+            <th class="text-right">Цена</th>
+            <th class="text-center warning">Кол.</th>
+            <th class="text-right warning">Стоим.</th>
+            <th class="text-right">Пользователь 1</th>
+            <th class="text-right">Пользователь 2</th>
+            <th class="text-right">Пользователь 3</th>
+            <th class="text-right">Пользователь 4</th>
+            <th class="text-center info">Кол. всего</th>
+            <th class="text-right info">Стоим. всего</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Какое-то блюдо</td>
+            <td class="text-right">10</td>
+            <td class="text-center warning">
+              <button class="btn btn-xs btn-default btn-success">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+              </button>
+              <span class="badge">5</span>
+              <button class="btn btn-xs btn-danger">
+                <span class="glyphicon glyphicon-minus-sign"></span>
+              </button>
+            </td>
+            <td class="text-right warning">50</td>
+            <td class="text-right"></td>
+            <td class="text-right">20 <span class="badge">2</span></td>
+            <td class="text-right">10 <span class="badge">1</span></td>
+            <td class="text-right">30 <span class="badge">3</span></td>
+            <td class="text-center info">11</td>
+            <td class="text-right info">110</td>
+          </tr>
+          <tr>
+            <td>Какое-то блюдо</td>
+            <td class="text-right">10</td>
+            <td class="text-center warning">
+              <button class="btn btn-xs btn-default btn-success">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+              </button>
+              <span class="badge">5</span>
+              <button class="btn btn-xs btn-danger">
+                <span class="glyphicon glyphicon-minus-sign"></span>
+              </button>
+            </td>
+            <td class="text-right warning">50</td>
+            <td class="text-right"></td>
+            <td class="text-right">20 <span class="badge">2</span></td>
+            <td class="text-right">10 <span class="badge">1</span></td>
+            <td class="text-right">30 <span class="badge">3</span></td>
+            <td class="text-center info">11</td>
+            <td class="text-right info">110</td>
+          </tr>
+          <tr>
+            <td>Какое-то блюдо</td>
+            <td class="text-right">10</td>
+            <td class="text-center warning">
+              <button class="btn btn-xs btn-default btn-success">
+                <span class="glyphicon glyphicon-plus-sign"></span>
+              </button>
+              <span class="badge">5</span>
+              <button class="btn btn-xs btn-danger">
+                <span class="glyphicon glyphicon-minus-sign"></span>
+              </button>
+            </td>
+            <td class="text-right warning">50</td>
+            <td class="text-right"></td>
+            <td class="text-right">20 <span class="badge">2</span></td>
+            <td class="text-right">10 <span class="badge">1</span></td>
+            <td class="text-right">30 <span class="badge">3</span></td>
+            <td class="text-center info">11</td>
+            <td class="text-right info">110</td>
+          </tr>
+
+          <tr class="footer">
+            <td colspan="2"></td>
+            <td colspan="2" class="text-right warning">
+              150
+            </td>
+            <td class="text-right"></td>
+            <td class="text-right">60</td>
+            <td class="text-right">30</td>
+            <td class="text-right">60</td>
+            <td colspan="2" class="text-right info">330</td>
+          </tr>
+        </tbody>
+        <thead>
+          <tr> 
+            <th>Всего</th>
+            <th></th>
+            <th colspan="2" class="text-right warning">Стоимость моя</th>
+            <th class="text-right">Пользователь 1</th>
+            <th class="text-right">Пользователь 2</th>
+            <th class="text-right">Пользователь 3</th>
+            <th class="text-right">Пользователь 4</th>
+            <th colspan="2" class="text-right info">Стоим. всего</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <td colspan="2"></td>
+            <td colspan="2" class="text-right warning">
+              150
+            </td>
+            <td class="text-right"></td>
+            <td class="text-right">60</td>
+            <td class="text-right">30</td>
+            <td class="text-right">60</td>
+            <td colspan="2" class="text-right info">330</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" 
+        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </body>
+</html>
