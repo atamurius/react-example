@@ -17,7 +17,10 @@ module.exports = {
             __dirname + "/src/static"
         ],
         port: 8081,
-        host: '0.0.0.0'
+        host: '0.0.0.0',
+        historyApiFallback: {
+          index: '/'
+        }
     },
     module: {
         loaders: [
