@@ -10,11 +10,14 @@ module.exports = {
     resolve: {
         extensions: ['', '.js', '.jsx']
     },
+    devtool: 'inline-source-map',
     devServer: {
         contentBase: [
             __dirname + "/target",
             __dirname + "/src/static"
-        ]
+        ],
+        port: 8081,
+        host: '0.0.0.0'
     },
     module: {
         loaders: [
