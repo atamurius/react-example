@@ -16,6 +16,14 @@ export default function OrdersList({ children }) {
               </div>
               <button type="submit" className="btn btn-default">Создать заказ</button>
             </form>
+            <ul className="nav navbar-nav">
+              <li>
+                <a href="/orders">Orders</a>
+              </li>
+              <li>
+                <a href="/tasks">Task list</a>
+              </li>
+            </ul>
             <ul className="nav navbar-nav navbar-right">
               <li><p className="navbar-text">Аноним</p></li>
             </ul>
