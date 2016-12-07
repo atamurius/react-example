@@ -5,6 +5,8 @@ React & Redux Sample Project
 ------
 
 1. [Part1](https://www.youtube.com/watch?v=Emu0bzUBKxQ)
+2. [Part2](https://www.youtube.com/watch?v=kai_6SEwi8w)
+3. [Part3](https://www.youtube.com/watch?v=_eyHUJIHJkw)
 
 Пререквизиты
 ------------
