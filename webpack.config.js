@@ -17,7 +17,15 @@ module.exports = {
             __dirname + "/src/static"
         ],
         port: 8081,
-        host: '0.0.0.0'
+        host: '0.0.0.0',
+        historyApiFallback: {
+          index: '/'
+        },
+        proxy: {
+          '/api/**': {
+            target: 'http://localhost:8080'
+          }
+        }
     },
     module: {
         loaders: [
@@ -29,7 +37,8 @@ module.exports = {
                     presets: ['react', 'es2015'],
                     plugins: [
                       "transform-class-properties",
-                      "transform-object-rest-spread"
+                      "transform-object-rest-spread",
+                      "transform-decorators-legacy"
                     ]
                 },
             }

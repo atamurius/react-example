@@ -1,17 +1,32 @@
 import React, { PropTypes as P } from 'react';
 import { connect } from 'react-redux';
-import { toggle } from './reducer';
+import { toggle, tasks } from './tasksReducer';
 
-const modify = connect(
+/*
+export default connect(
   state => ({
     tasks: state.tasks
   })
-);
+)(TaskList);
 
-class TaskList extends React.Component {
+const plus = x => y => x + y;
+function plus(x) {
+  return function(y) {
+    return x + y;
+  }
+}
+
+*/
+
+@connect(
+  state => ({
+    tasks: tasks(state)
+  })
+)
+export default class TaskList extends React.Component {
 
   static propTypes = {
-    text: P.string.isRequired,
+    text: P.string,
     tasks: P.array.isRequired
   };
 
@@ -20,7 +35,8 @@ class TaskList extends React.Component {
   }
 
   render() {
-    const { text, tasks } = this.props;
+    const { tasks } = this.props;
+    const { text } = this.props;
     return (
         <div>
             <h1>Hello, {text}</h1>
@@ -38,8 +54,6 @@ class TaskList extends React.Component {
     );
   }
 }
-
-export default modify(TaskList);
 
 const Item = ({ text, completed, onChange }) =>
   <li>
