@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { routerReducer } from 'react-router-redux';
 
 import {
   reducer as tasksReducer,
@@ -13,6 +14,7 @@ import {
 export const reducer = combineReducers({
   tasks: tasksReducer,
   orders: ordersReducer,
+  routing: routerReducer,
 });
 
 export const routes = [

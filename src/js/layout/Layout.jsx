@@ -1,4 +1,6 @@
 import React, { PropTypes as P } from 'react';
+import { Link } from 'react-router';
+
 
 export default function OrdersList({ children }) {
   return (
@@ -18,10 +20,10 @@ export default function OrdersList({ children }) {
             </form>
             <ul className="nav navbar-nav">
               <li>
-                <a href="/orders">Orders</a>
+                <Link to="/orders">Orders</Link>
               </li>
               <li>
-                <a href="/tasks">Task list</a>
+                <Link to="/tasks">Task list</Link>
               </li>
             </ul>
             <ul className="nav navbar-nav navbar-right">

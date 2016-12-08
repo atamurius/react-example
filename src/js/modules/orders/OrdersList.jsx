@@ -1,27 +1,49 @@
 import React, { PropTypes as P } from 'react';
 import { connect } from 'react-redux';
-import { 
-  orders, isFetching, ORDERS_FETCH_REQUEST,
-  ordersFetchSuccess, ORDERS_FETCH_FAILURE
+import {
+  orders, isFetching, paging,
+  fetchOrdersList, 
 } from './ordersReducer';
-import axios from 'axios';
+import { Link } from 'react-router';
 
 @connect(state => ({
   orders: orders(state),
   isFetching: isFetching(state),
-}))
+  page: paging(state),
+}), {
+  fetch: fetchOrdersList
+})
 export default class OrdersList extends React.Component {
 
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch({ type: ORDERS_FETCH_REQUEST });
-    axios.get('/api/orders')
-         .then(res => dispatch(ordersFetchSuccess(res.data)))
-         .catch(err => dispatch({ type: ORDERS_FETCH_FAILURE }));
+    this.componentWillReceiveProps(this.props);
+  }
+
+  componentWillReceiveProps(props) {
+    const { page, isFetching, fetch, location: { query } } = props;
+    if (! isFetching && (query.page != page.current || ! page.total)) {
+      fetch(query.page || page.current || 0);
+    }
+  }
+
+  navigation() {
+    const res = [];
+    for (let i = 0; i < this.props.page.total; i++)
+      res.push(
+        <Link
+          key={i}
+          to={`/orders?page=${i}`}
+          activeClassName="btn-primary"
+          className='btn btn-default btn-xs'
+        >
+          {i + 1}
+        </Link>
+      )
+    return res;
   }
 
   render() {
-    const { orders, isFetching } = this.props;
+    const { orders, isFetching, page } = this.props;
     return (
       <div>
         <h1>Orders list</h1>
@@ -35,7 +57,7 @@ export default class OrdersList extends React.Component {
               </tr>
             </thead>
             <tbody>
-              {orders.map(order => 
+              {orders.map(order =>
                 <tr key={order.id}>
                   <td>{order.id}</td>
                   <td>{order.users.join(', ')}</td>
@@ -43,6 +65,15 @@ export default class OrdersList extends React.Component {
                 </tr>
               )}
             </tbody>
+            <tfoot>
+              <tr>
+                <td colSpan="3" className="text-right">
+                  <div className="btn-group">
+                    {this.navigation()}
+                  </div>
+                </td>
+              </tr>
+            </tfoot>
           </table>
           :
           <p>Orders are {isFetching || 'not'} fetching</p>
