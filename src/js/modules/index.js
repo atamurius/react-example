@@ -9,6 +9,7 @@ import {
 import {
   routes as ordersRoutes,
   reducer as ordersReducer,
+  actor as ordersActor,
 } from './orders';
 
 export const reducer = combineReducers({
@@ -21,3 +22,9 @@ export const routes = [
   ordersRoutes,
   tasksRoutes
 ];
+
+export const actorMiddleware = store => next => action => {
+  const result = next(action);
+  ordersActor(store.getState(), action, store.dispatch);
+  return result;
+}

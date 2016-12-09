@@ -2,7 +2,7 @@ import React, { PropTypes as P } from 'react';
 import { connect } from 'react-redux';
 import {
   orders, isFetching, paging,
-  fetchOrdersList, 
+  fetchOrdersList,
 } from './ordersReducer';
 import { Link } from 'react-router';
 
@@ -15,26 +15,15 @@ import { Link } from 'react-router';
 })
 export default class OrdersList extends React.Component {
 
-  componentDidMount() {
-    this.componentWillReceiveProps(this.props);
-  }
-
-  componentWillReceiveProps(props) {
-    const { page, isFetching, fetch, location: { query } } = props;
-    if (! isFetching && (query.page != page.current || ! page.total)) {
-      fetch(query.page || page.current || 0);
-    }
-  }
-
   navigation() {
+    const { page: { current } } = this.props;
     const res = [];
     for (let i = 0; i < this.props.page.total; i++)
       res.push(
         <Link
           key={i}
           to={`/orders?page=${i}`}
-          activeClassName="btn-primary"
-          className='btn btn-default btn-xs'
+          className={`btn btn-default btn-xs ${current === i && 'btn-primary'}`}
         >
           {i + 1}
         </Link>
@@ -59,7 +48,11 @@ export default class OrdersList extends React.Component {
             <tbody>
               {orders.map(order =>
                 <tr key={order.id}>
-                  <td>{order.id}</td>
+                  <td>
+                    <Link to={`/orders/${order.id}`}>
+                      #{order.id}
+                    </Link>
+                  </td>
                   <td>{order.users.join(', ')}</td>
                   <td className="text-right">{order.amount.toFixed(2)}</td>
                 </tr>

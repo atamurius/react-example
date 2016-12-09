@@ -7,13 +7,13 @@ import { createHistory } from 'history';
 import thunk from 'redux-thunk';
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
 
-import { reducer, routes } from './modules';
+import { reducer, routes, actorMiddleware } from './modules';
 import Layout from './layout/Layout';
 
 const store = createStore(
   reducer,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-  applyMiddleware(thunk));
+  applyMiddleware(thunk, actorMiddleware));
 
 const history = syncHistoryWithStore(useRouterHistory(createHistory)(), store);
 
