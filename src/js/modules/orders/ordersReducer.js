@@ -11,9 +11,9 @@ export const ordersFetchSuccess = orders => ({
 
 export const ORDER_PIN_ENTERED = 'ORDER_PIN_ENTERED';
 
-export const pinEntered = code => ({
+export const pinEntered = (code, name) => ({
   type: ORDER_PIN_ENTERED,
-  code,
+  code, name,
 })
 
 export const fetchOrdersList = (page = 0) => dispatch => {
@@ -38,13 +38,31 @@ export const fetchOrder = (id, code) => dispatch => {
    .catch(err => dispatch({ type: ORDER_FETCH_FAILURE }));
 }
 
+export const MENU_FETCH_REQUEST = 'MENU_FETCH_REQUEST';
+export const MENU_FETCH_SUCCESS = 'MENU_FETCH_SUCCESS';
+export const MENU_FETCH_FAILURE = 'MENU_FETCH_FAILURE';
+
+export const fetchMenu = () => dispatch => {
+  dispatch({ type: MENU_FETCH_REQUEST });
+  axios.get(`/api/dishes`)
+   .then(res => dispatch({ 
+      type: MENU_FETCH_SUCCESS, 
+      menu: res.data.content, 
+    }))
+   .catch(err => dispatch({ type: MENU_FETCH_FAILURE, err }));
+}
+
 const initialState = {
   orders: { },
   order: { },
+  menu: [ ],
   code: null,
+  name: 'Аноним',
   isFetching: false
 }
 
+export const menu = state => state.orders.menu;
+export const name = state => state.orders.name;
 export const orders = state => state.orders.orders.content;
 export const order = state => state.orders.order;
 export const isFetching = state => state.orders.isFetching;
@@ -57,6 +75,7 @@ export const reducer = (state = initialState, action) => {
   switch (action.type) {
 
     case ORDERS_FETCH_REQUEST:
+    case MENU_FETCH_REQUEST:
     case ORDER_FETCH_REQUEST:
       return {
         ...state,
@@ -67,6 +86,13 @@ export const reducer = (state = initialState, action) => {
       return {
         ...state,
         orders: action.orders,
+        isFetching: false
+      }
+
+    case MENU_FETCH_SUCCESS:
+      return {
+        ...state,
+        menu: action.menu,
         isFetching: false
       }
 
@@ -86,9 +112,11 @@ export const reducer = (state = initialState, action) => {
     case ORDER_PIN_ENTERED:
       return {
         ...state,
-        code: action.code
+        code: action.code,
+        name: action.name,
       };
 
+    case MENU_FETCH_FAILURE:
     case ORDERS_FETCH_FAILURE:
     case ORDER_FETCH_FAILURE:
       return {
@@ -113,12 +141,16 @@ export const actor = (state, action, dispatch) => {
     }
   }
 
+  // Order details page navigated
   if (action.type === '@@router/LOCATION_CHANGE') {
     const { payload: { pathname, query } } = action;
     const match = pathname.match(/^\/orders\/(\d+)\/?$/);
-    if (match[1] != order(state).id) {
-      console.log(match[1], order(state).id)
-      dispatch({ type: 'ORDER_CLEAR_INFO' })
+    if (match && match[1] != order(state).id) {
+      //dispatch({ type: 'ORDER_CLEAR_INFO' })
+      dispatch(pinEntered('0000','Алексей'))
+      if (menu(state).length === 0) {
+        dispatch(fetchMenu());
+      }
     }
   }
 
