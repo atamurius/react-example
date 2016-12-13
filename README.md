@@ -4,10 +4,13 @@ React & Redux Sample Project
 Видео
 ------
 
-1. [Part1](https://www.youtube.com/watch?v=Emu0bzUBKxQ)
-2. [Part2](https://www.youtube.com/watch?v=kai_6SEwi8w)
-3. [Part3](https://www.youtube.com/watch?v=_eyHUJIHJkw)
-4. [Part4](https://www.youtube.com/watch?v=Zn4hln5a7jU)
+1. [Part 1](https://www.youtube.com/watch?v=Emu0bzUBKxQ)
+2. [Part 2](https://www.youtube.com/watch?v=kai_6SEwi8w)
+3. [Part 3](https://www.youtube.com/watch?v=_eyHUJIHJkw)
+4. [Part 4](https://www.youtube.com/watch?v=Zn4hln5a7jU)
+5. [Part 5](https://www.youtube.com/watch?v=oG6Vlx4C6Bw)
+6. [Part 6](https://www.youtube.com/watch?v=qBh6JHzgd_s)
+7. [Part 7](https://www.youtube.com/watch?v=3OENVyDcEuE)
 
 Пререквизиты
 ------------

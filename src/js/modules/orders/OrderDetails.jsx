@@ -1,14 +1,19 @@
 import React, { PropTypes as P } from 'react';
 import { connect } from 'react-redux';
-import { order, name, menu, pinEntered } from './ordersReducer';
+import { 
+  order, name, pinEntered, quantityOf, reservations, categories,
+  usersOfOrder, totalCostOf, totalQuantityOf, reserveOrderDish,
+  unreserveOrderDish,
+} from './ordersModel';
 import I from 'immutable';
 
 @connect(state => ({
+  reservations: reservations(state),
+  categories: categories(state),
   order: order(state),
   name: name(state),
-  menu: menu(state),
 }), {
-  pinEntered
+  pinEntered, reserveOrderDish, unreserveOrderDish
 })
 export default class OrderDetails extends React.Component {
 
@@ -19,7 +24,7 @@ export default class OrderDetails extends React.Component {
   }
 
   render() {
-    const { order, name, menu } = this.props;
+    const { reservations, order, name, categories, reserveOrderDish, unreserveOrderDish } = this.props;
     return (
       <div>
         <h1>Order details: #{this.props.params.id}</h1>
@@ -27,8 +32,11 @@ export default class OrderDetails extends React.Component {
           <OrderAccessForm onEnter={this.enter}/>
           :
           <OrderTable
-            dishes={menu}
-            reservations={order.reservations}
+            categories={categories}
+            reservations={reservations}
+            users={usersOfOrder(order, name)}
+            reserve={reserveOrderDish}
+            unreserve={unreserveOrderDish}
             current={name} />
         }
       </div>
@@ -67,24 +75,7 @@ const OrderAccessForm = ({ onEnter }) =>
   </form>
 ;
 
-function OrderTable({ dishes, reservations, current }) {
-
-  const users = I.fromJS(reservations)
-    .groupBy(r => r.get('username'))
-    .keySeq()
-    .filter(u => u !== current);
-
-  const reservs = I.fromJS(reservations)
-    .groupBy(r => `${r.get('username')}:${r.getIn(['dish','id'])}`)
-    .map(list => list.get(0));
-  
-  const categories = I.fromJS(dishes)
-    .groupBy(d => d.getIn(['category','id']));
-
-  const total = (dishes, user) => dishes.reduce((sum,dish) => 
-    sum + reservs.get(`${user}:${dish.get('id')}`,I.Map()).get('amount',0) * dish.get('price'),
-    0 
-  );
+function OrderTable({ users, categories, reservations, current, reserve, unreserve }) {
 
   const catBlocks = categories.map((dishes, cat) => [
           <thead key={`${cat}-header`}>
@@ -94,7 +85,7 @@ function OrderTable({ dishes, reservations, current }) {
               <th className="text-center warning">Кол.</th>
               <th className="text-right warning">Стоим.</th>
               {users.map(u =>
-                <th 
+                <th
                   key={u}
                   className="text-right"
                 >
@@ -107,23 +98,27 @@ function OrderTable({ dishes, reservations, current }) {
           </thead>,
           <tbody key={cat}>
             {dishes.map(dish =>
-              <DishOrder key={dish.get('id')} {...{dish, users, reservs, current}} />
+              <DishOrder key={dish.get('id')} {...{dish, users, reservations, current, reserve, unreserve}} />
             )}
 
             <tr className="footer">
               <td colSpan="2"></td>
               <td colSpan="2" className="text-right warning">
-                {total(dishes, current)}
+                {totalCostOf([current], dishes, reservations)}
               </td>
               {users.map(u =>
-                <td className="text-right">{total(dishes, u)}</td>
+                <td className="text-right">
+                  {totalCostOf([u], dishes, reservations)}
+                </td>
               )}
               <td colSpan="2" className="text-right info">
-                {total(dishes, current) + users.reduce((sum, u) => sum + total(dishes,u), 0)}
+                {totalCostOf(users.concat(current), dishes, reservations)}
               </td>
             </tr>
           </tbody>
         ]).reduce((acc, x) => acc.concat(x), []);
+
+  const dishes = categories.valueSeq().reduce((acc,ds) => acc.concat(ds), I.List());
 
   return (
   <div>
@@ -153,12 +148,28 @@ function OrderTable({ dishes, reservations, current }) {
           <tr>
             <td colSpan="2"></td>
             <td colSpan="2" className="text-right warning">
-              150
+              {totalCostOf(
+                [current], 
+                dishes,
+                reservations
+              )}
             </td>
             {users.map(u =>
-              <td key={u} className="text-right">60</td>
+              <td key={u} className="text-right">
+                {totalCostOf(
+                  [u], 
+                  dishes,
+                  reservations
+                )}
+              </td>
             )}
-            <td colSpan="2" className="text-right info">330</td>
+            <td colSpan="2" className="text-right info">
+                {totalCostOf(
+                  users.concat([current]), 
+                  dishes,
+                  reservations
+                )}
+            </td>
           </tr>
         </tfoot>
       </table>
@@ -166,42 +177,42 @@ function OrderTable({ dishes, reservations, current }) {
   )
 }
 
-function DishOrder({ dish, users, reservs, current }) {
-  const r = reservs.get(`${current}:${dish.get('id')}`, I.Map());
-  const d = dish.toJS();
-  const userReservs = users.map(u => reservs.get(`${u}:${d.id}`, I.Map()));
-  const totalAmount = r.get('amount', 0) + userReservs
-    .map(r => r.get('amount',0))
-    .reduce((a,b) => a + b, 0);
+function DishOrder({ dish, users, reservations, current, reserve, unreserve }) {
   return (
     <tr>
-      <td>{d.name}</td>
-      <td className="text-right">{d.price.toFixed(2)}</td>
+      <td>{dish.get('name')}</td>
+      <td className="text-right">{dish.get('price').toFixed(2)}</td>
       <td className="text-center warning">
-        <button className="btn btn-xs btn-default btn-success">
+        <button 
+          className="btn btn-xs btn-default btn-success"
+          onClick={() => reserve(dish.get('id'))}
+        >
           <span className="glyphicon glyphicon-plus-sign"></span>
         </button>
-        <span className="badge">{r.get('amount', 0)}</span>
-        <button className="btn btn-xs btn-danger">
+        <span className="badge">{quantityOf(current, dish.get('id'), reservations)}</span>
+        <button
+          className="btn btn-xs btn-danger"
+          onClick={() => unreserve(dish.get('id'))}
+        >
           <span className="glyphicon glyphicon-minus-sign"></span>
         </button>
       </td>
       <td className="text-right warning">{
-        (r.get('amount',0) * d.price).toFixed(2)
+        (quantityOf(current, dish.get('id'), reservations) * dish.get('price')).toFixed(2)
       }</td>
-      {userReservs.map((ur,u) =>
+      {users.map(u =>
         <td key={u} className="text-right">
-          {ur.get('amount') ? (ur.get('amount',0) * d.price).toFixed(2) : null} 
+          {quantityOf(u, dish.get('id'), reservations) * dish.get('price')}
           {' '}
-          {ur.get('amount') ? 
-            <span className="badge">{ur.get('amount',0)}</span>
-            :
-            null
-          }
-        </td> 
+          <span className="badge">{quantityOf(u, dish.get('id'), reservations)}</span>
+        </td>
       )}
-      <td className="text-center info">{totalAmount}</td>
-      <td className="text-right info">{(totalAmount * d.price).toFixed(2)}</td>
+      <td className="text-center info">
+        {totalQuantityOf(users.concat([current]), [dish], reservations)}
+      </td>
+      <td className="text-right info">
+        {totalCostOf(users.concat([current]), [dish], reservations)}
+      </td>
     </tr>
   )
 }

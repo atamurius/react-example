@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {
   orders, isFetching, paging,
   fetchOrdersList,
-} from './ordersReducer';
+} from './ordersModel';
 import { Link } from 'react-router';
 
 @connect(state => ({
